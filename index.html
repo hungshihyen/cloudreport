@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="ie=edge"
+    >
+    <title>雲端回報系統</title>
+    <link
+        rel='stylesheet'
+        href='../css/bootstrap4.min.css'
+    />
+    <link
+        rel="stylesheet"
+        href="main.css"
+    >
+    <script src='../dist/vue.js'></script>
+    <script src='../dist/vue-router.js'></script>
+    <script src="../dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="text-white bg-secondary">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="title">
+                    <span class="h4">GainHow</span>
+                    <span class="ml-3">雲端回報系統</span>
+                </div>
+                <div class="login">
+                    <span>{{login.loginName}}</span>
+                </div>
+            </div>
+        </header>
+        <div class="container mt-3">
+            <router-view :login="login"></router-view>
+        </div>
+    </div>
+    <script src="./components/History.js"></script>
+    <script src="./components/Histories.js"></script>
+    <script src="./components/Question.js"></script>
+    <script src="./pages/Admin.js"></script>
+    <script src="./pages/Users.js"></script>
+    <script src="./main.js"></script>
+</body>
+
+</html>

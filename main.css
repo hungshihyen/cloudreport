@@ -1,0 +1,26 @@
+* {
+    font-family: '微軟正黑體';
+}
+
+header {
+    height: 3em;
+}
+
+header .container {
+    height: 100%;
+}
+
+.router-link-exact-active {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+input[type="file"] {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
