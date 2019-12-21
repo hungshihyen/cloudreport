@@ -9,7 +9,11 @@
         meta: { loginflag: true },
         children: [
           {
-            path: '/',
+            path: '',
+            redirect: 'users'
+          },
+          {
+            path: 'users',
             name: 'question',
             component: Question(),
             meta: { loginflag: true }
@@ -19,6 +23,10 @@
             name: 'histories',
             component: Histories(),
             meta: { loginflag: true }
+          },
+          {
+            path: '*',
+            redirect: 'users'
           }
         ]
       },
@@ -36,7 +44,7 @@
       },
       {
         path: '*',
-        redirect: '/'
+        redirect: '/users'
       }
     ]
   });
