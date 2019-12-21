@@ -58,7 +58,7 @@ var app = new Vue({
     login: {
       loginName: '',
       auth: 0,
-      loginId: '1'
+      loginId: ''
     }
   },
   mounted() {

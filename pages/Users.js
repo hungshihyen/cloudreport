@@ -18,6 +18,6 @@ function Users() {
     },
     mounted() {},
     watch: {},
-    components: { Histories, Question }
+    components: { Histories: Histories(), Question: Question() }
   };
 }
