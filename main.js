@@ -59,7 +59,7 @@
       login: {
         loginName: '',
         auth: 0,
-        loginId: ''
+        loginId: '1'
       }
     },
     mounted() {
