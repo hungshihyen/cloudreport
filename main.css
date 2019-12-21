@@ -32,3 +32,13 @@ header .container {
     top: 0;
     left: 0;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .3s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
