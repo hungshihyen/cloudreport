@@ -39,8 +39,7 @@
       {
         path: '/login',
         name: 'login',
-        component: Login(),
-        meta: { loginflag: true }
+        component: Login()
       },
       {
         path: '*',
