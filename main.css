@@ -10,17 +10,41 @@ header .container {
     height: 100%;
 }
 
-.router-link-exact-active {
+/* .router-link-exact-active {
     color: #212529;
     background-color: #ffc107;
     border-color: #ffc107;
-}
+} */
 
-input[type="file"] {
+#question input[type="file"] {
     opacity: 0;
     z-index: -1;
     position: absolute;
     top: 0;
     left: 0;
 
+}
+
+#question input[type="text"] {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .3s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.card-body p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
