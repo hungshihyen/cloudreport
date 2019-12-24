@@ -26,11 +26,13 @@
   />
   <script src='../dist/vue.js'></script>
   <script src='../dist/vue-router.js'></script>
-  <script src="../dist/axios.min.js"></script>
 </head>
 
 <body>
-  <div id="app">
+  <div
+    id="app"
+    v-cloak
+  >
     <header class="text-white bg-secondary">
       <div class="container d-flex justify-content-between align-items-center">
         <div class="title">
@@ -49,6 +51,7 @@
     <div class="container mt-3">
       <router-view
         :login="login"
+        :apiurl="apiurl"
         @check-login="checkLogin"
       ></router-view>
     </div>

@@ -2,6 +2,10 @@
     font-family: '微軟正黑體';
 }
 
+[v-cloak] {
+    display: none;
+}
+
 header {
     height: 3em;
 }
@@ -47,4 +51,36 @@ header .container {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.attachment-pool {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.attachment-pool div {
+    position: relative;
+}
+
+.attachment-pool .img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+    /* background-image: url('./files/1577154765_1.png'); */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.attachment-pool .img+.img {
+    margin-left: 5px;
+}
+
+.imgHover {
+    position: absolute;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 8px;
+    z-index: 2;
+    /* background-size: cover; */
 }

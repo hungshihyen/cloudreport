@@ -61,7 +61,8 @@
 				loginName: '',
 				auth: 0,
 				loginId: ''
-			}
+			},
+			apiurl: './main.php'
 		},
 		created() {},
 		computed: {
@@ -77,16 +78,22 @@
 				this.login.loginName = name;
 				this.login.auth = auth * 1;
 			},
-			async logoutHandler() {
-				const params = new URLSearchParams();
-				params.append('function', 'logoutHandler');
-				await axios.post('./main.php', params, {
-					headers: {
-						'content-type': 'application/x-www-form-urlencoded'
-					}
+			logoutHandler() {
+				// const params = new URLSearchParams();
+				// params.append('function', 'logoutHandler');
+				// await axios.post('./main.php', params, {
+				// 	headers: {
+				// 		'content-type': 'application/x-www-form-urlencoded'
+				// 	}
+				// });
+				$.ajax({
+					url: this.apiurl,
+					type: 'post',
+					data: { function: 'logoutHandler' }
+				}).done(() => {
+					this.checkLogin({ account: '', name: '', auth: 0 });
+					this.$router.push({ path: '/login' });
 				});
-				this.checkLogin({ account: '', name: '', auth: 0 });
-				this.$router.push({ path: '/login' });
 			}
 		}
 	});
