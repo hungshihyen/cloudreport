@@ -58,7 +58,9 @@ function Question() {
 			submitHandler() {
 				const vm = this;
 				if (this.questionContent === '') return;
-				let question = JSON.stringify(this.questionContent);
+				let question = JSON.stringify(
+					this.questionContent.replace(/\r\n|\n/g, '')
+				);
 				let formData = new FormData();
 				if (this.files.length > 0) {
 					for (let i = 0; i < this.files.length; i++) {

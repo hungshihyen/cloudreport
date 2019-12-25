@@ -4,8 +4,11 @@ function Histories() {
 		template: `
 			<div>
 				<h3 class="mt-3">歷史問題區</h3>
-				<div class="mt-3 row">
+				<div class="mt-3 row" v-if="showData.length > 0">
 					<history v-for="item in showData" :key="item.qid" :question="item" @viewQuestion="viewQuestion"/>
+				</div>
+				<div class="mt-3" v-else>
+					尚無問題
 				</div>
 				<div class="modal fade" id="historiesModal" tabindex="-1" role="dialog">
 					<div class="modal-dialog modal-lg" role="document">
@@ -30,8 +33,8 @@ function Histories() {
 									</div>
 								</div>
 								<div class="alert alert-success" v-if="viewObj.answerflag === '1'">
-									<div>回覆者：{{viewObj.responder}}</div>
-									<div>內容：{{viewObj.response}}</div>
+									<div>{{viewObj.responder}} 回覆： {{viewObj.response}}</div>
+									
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -102,6 +105,7 @@ function Histories() {
 					}
 				}).done(response => {
 					response = JSON.parse(response);
+					console.log(response);
 					response.length > 0
 						? (this.Qary = response)
 						: (this.Qary = []);

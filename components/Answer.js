@@ -57,9 +57,6 @@ function Answer() {
 		},
 		data() {
 			return {
-				reply: {
-					text: ''
-				},
 				imgInhance: '',
 				answerText: '',
 				editingDisabled: false
@@ -136,6 +133,7 @@ function Answer() {
 					type: 'post',
 					data: { function: 'cancelAnswerHandler', qid }
 				}).done(res => {
+					this.answerText = '';
 					let n = this.viewObj.answerflag === '1' ? true : false;
 					this.$emit('answer-renew', n);
 					this.markQuestionHandler(qid);
