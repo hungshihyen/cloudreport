@@ -42,7 +42,7 @@ function Admin() {
 		},
 		components: { answer: Answer() },
 		mounted() {
-			this.checkEditingHandler();
+			// this.checkEditingHandler();
 		},
 		computed: {
 			mainData() {
@@ -65,10 +65,10 @@ function Admin() {
 					this.Qary = response;
 				});
 			},
-			triggerRenew(n) {
+			async triggerRenew(n) {
 				clearTimeout(timer);
-				this.getQuestions(n);
-				this.checkEditingHandler();
+				await this.getQuestions(n);
+				await this.checkEditingHandler();
 			},
 			markQuestionHandler(qid) {
 				clearTimeout(timer);
@@ -102,8 +102,9 @@ function Admin() {
 			startCheckEditing() {
 				clearTimeout(timer);
 				timer = setTimeout(() => {
-					this.checkEditingHandler();
-				}, 3500);
+					// this.checkEditingHandler();
+					this.triggerRenew(this.active);
+				}, 5000);
 			},
 			checkEditingHandler() {
 				$.ajax({
@@ -117,15 +118,20 @@ function Admin() {
 				});
 			}
 		},
+		beforeRouteLeave(to, from, next) {
+			clearTimeout(timer);
+			next();
+		},
 		watch: {
 			$route: {
 				immediate: true,
 				handler(newVal, oldVal) {
 					clearTimeout(timer);
 					let flag = newVal.query.answer ? true : false;
-					this.getQuestions(flag);
 					this.active = flag;
-					this.checkEditingHandler();
+					this.triggerRenew(flag);
+					// this.getQuestions(flag);
+					// this.checkEditingHandler();
 				}
 			},
 			editingData: {
