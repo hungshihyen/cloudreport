@@ -5,7 +5,7 @@ function Login() {
 			<div class="row">
 				<form class="col-sm-6 mx-auto mt-5 form-signin text-center">        
 					<h1 class="h3 mb-3 font-weight-normal text-left">請登入</h1>      
-					<input type="text" id="account" class="form-control my-3" placeholder="account" required v-model.trim="account">       
+					<input type="text" id="account" class="form-control my-3" placeholder="AIPS 帳號" required v-model.trim="account">       
 					<input type="password" id="password" class="form-control my-3" placeholder="password" required v-model.trim="password">
 					<button class="btn btn-primary" type="submit" @click.prevent="loginHandler">Sign in</button>       
 				</form>
