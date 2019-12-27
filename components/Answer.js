@@ -14,7 +14,7 @@ function Answer() {
 				</button>
 				<span class="ml-3 text-danger" v-show="editingDisabled && viewObj.answerflag === '0'">{{viewObj.editing}} 正在編輯</span>
 				<p class="mt-3">
-					{{viewObj.question}}
+					{{viewObj.questioner}} 發問：{{viewObj.question}}
 					<div class="attachment-pool" v-show="imgInclude">
 						<div class="img" 
 							v-for="(img,index) in viewObj.imgAttachment" 
@@ -35,7 +35,10 @@ function Answer() {
 					</div>              
 					<div class="card card-body" v-if="viewObj.answerflag === '1'">
 						<div class="alert">
-						<span>{{viewObj.responder}}</span> 回覆：{{viewObj.response}}                  
+							<span>{{viewObj.responder}}</span> 回覆：{{viewObj.response}}
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-outline-info float-right" @click="resetQuestion">重新回答</button>
 						</div>
 					</div>
 				</div>
@@ -122,7 +125,9 @@ function Answer() {
 				}
 			},
 			markQuestionHandler(qid) {
+				$('.collapse').collapse('hide');
 				if (this.viewObj.answerflag === '0') {
+					this.answerText = this.viewObj.response;
 					this.$emit('mark-question', qid);
 				}
 				return;
@@ -137,6 +142,16 @@ function Answer() {
 					let n = this.viewObj.answerflag === '1' ? true : false;
 					this.$emit('answer-renew', n);
 					this.markQuestionHandler(qid);
+				});
+			},
+			resetQuestion() {
+				$.ajax({
+					url: this.apiurl,
+					type: 'post',
+					data: { function: 'resetQuestion', qid: this.viewObj.qid }
+				}).done(() => {
+					let n = this.viewObj.answerflag === '1' ? true : false;
+					this.$emit('answer-renew', n);
 				});
 			}
 		}

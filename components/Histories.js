@@ -105,7 +105,6 @@ function Histories() {
 					}
 				}).done(response => {
 					response = JSON.parse(response);
-					console.log(response);
 					response.length > 0
 						? (this.Qary = response)
 						: (this.Qary = []);

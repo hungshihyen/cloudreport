@@ -38,13 +38,21 @@
         <div class="title">
           <span class="h4">GainHow</span>
           <span class="ml-3">雲端回報系統</span>
+          <span
+            class="border border-dark ml-2 status"
+            :class="{'bg-success':status, 'bg-danger':!status}"
+            title="服務狀態"
+          ></span>
         </div>
         <div class="login">
-          <a
+          <button
+            type="button"
             class="btn btn-outline-secondary text-white"
-            href="javascript:;"
             @click.prevent="logoutHandler"
-          >{{loginName}}</a>
+            v-show="loginName"
+          >
+            登出 ({{loginName}})
+          </button>
         </div>
       </div>
     </header>

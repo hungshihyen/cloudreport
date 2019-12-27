@@ -14,11 +14,16 @@ header .container {
     height: 100%;
 }
 
-/* .router-link-exact-active {
-    color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
-} */
+.loginName {
+    vertical-align: middle;
+}
+
+.title .status {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
 
 #question input[type="file"] {
     opacity: 0;
@@ -67,9 +72,10 @@ header .container {
     height: 50px;
     border: 1px solid #ccc;
     border-radius: 1em;
-    /* background-image: url('./files/1577154765_1.png'); */
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+
 }
 
 .attachment-pool .img+.img {
@@ -83,4 +89,16 @@ header .container {
     padding: 8px;
     z-index: 2;
     /* background-size: cover; */
+}
+
+.preview::before {
+    content: 'x';
+    color: red;
+    display: block;
+    position: absolute;
+    font-size: 1.2em;
+    top: -14px;
+    right: -5px;
+    cursor: pointer;
+    z-index: 100;
 }

@@ -7,8 +7,10 @@ function Login() {
 					<h1 class="h3 mb-3 font-weight-normal text-left">請登入</h1>      
 					<input type="text" id="account" class="form-control my-3" placeholder="AIPS 帳號" required v-model.trim="account">       
 					<input type="password" id="password" class="form-control my-3" placeholder="password" required v-model.trim="password">
-					<button class="btn btn-primary" type="submit" @click.prevent="loginHandler">Sign in</button>       
-				</form>
+					<div class="alert alert-danger w-50 text-center mx-auto" v-show="errMsg">{{errMsg}}</div>
+					<button class="btn btn-primary" type="submit" @click.prevent="loginHandler">Sign In</button>
+				
+				</form>				
 			</div>`,
 		props: {
 			login: {
@@ -23,7 +25,8 @@ function Login() {
 		data() {
 			return {
 				account: '',
-				password: ''
+				password: '',
+				errMsg: ''
 			};
 		},
 		mounted() {
@@ -57,6 +60,11 @@ function Login() {
 							name
 						});
 						this.pathHandler(auth);
+					} else {
+						this.errMsg = '帳號或密碼錯誤，請重新登入。';
+						setTimeout(() => {
+							this.errMsg = '';
+						}, 1500);
 					}
 				});
 			},

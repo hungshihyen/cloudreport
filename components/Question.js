@@ -9,9 +9,20 @@ function Question() {
 						<label for="inputQuestion">回報問題</label>
 						<textarea class="form-control" id="inputQuestion" rows="3" placeholder="請輸入要回報的問題" v-model="content"></textarea>
 					</div>
+					<div class="attachment-pool" v-if="files.length > 0 && showPreViewImg.length > 0">
+						<div class="img border border-secondary rounded p-2 preview" 						
+							v-for="(img,index) in showPreViewImg" 
+							:style="'background-image:url('+img+')'" 
+							@click="deletePreview"></div>
+					</div>
+					<div class="attachment-pool" v-if="files.length > 0 && showPreViewPDF.length > 0">
+						<div class="mr-2 border border-secondary rounded p-2 preview" v-for="(pdf,index) in showPreViewPDF" @click="deletePreview">
+							{{pdf}}
+						</div>				
+					</div>
 					<div class="form-group text-right">
 						<label class="btn btn-outline-primary mb-0" for="uploadfiles">上傳附件</label>
-						<input :type="inputType" ref="files" class="form-control-file" id="uploadfiles" @change="fileUpload" accept=".jpg,.png,.pdf" multiple>
+						<input :type="inputType" ref="files" class="form-control-file" id="uploadfiles" @change="fileUpload" accept=".jpg,.png">
 						<button class="btn btn-outline-success" @click.prevent="submitHandler">送出</button>
 					</div>			  
 				</form>
@@ -30,10 +41,11 @@ function Question() {
 			return {
 				questionContent: '',
 				files: [],
-				inputFileType: 'file'
+				inputFileType: 'file',
+				preViewImg: [],
+				preViewPDF: []
 			};
 		},
-		mounted() {},
 		computed: {
 			content: {
 				get() {
@@ -45,11 +57,38 @@ function Question() {
 			},
 			inputType() {
 				return this.inputFileType;
+			},
+			showPreViewImg() {
+				return this.preViewImg;
+			},
+			showPreViewPDF() {
+				return this.preViewPDF;
 			}
 		},
 		methods: {
+			preViewImgHandler() {
+				if (this.files.length > 0) {
+					for (let i = 0; i < this.files.length; i++) {
+						if (this.files[i].type !== 'application/pdf') {
+							let reader = new FileReader();
+							reader.onload = e => {
+								this.preViewImg.push(e.target.result);
+							};
+							reader.readAsDataURL(this.files[i]);
+						} else {
+							this.preViewPDF.push(this.files[i].name);
+						}
+					}
+				}
+			},
 			fileUpload() {
-				this.files = this.$refs.files.files;
+				let file = this.$refs.files.files;
+				if (
+					file[0].type === 'image/jpeg' ||
+					file[0].type === 'image/png'
+				) {
+					this.files = file;
+				}
 				this.inputFileType = 'text';
 				setTimeout(() => {
 					this.inputFileType = 'file';
@@ -78,7 +117,25 @@ function Question() {
 					}
 				};
 				xhr.send(formData);
+			},
+			deletePreview() {
+				this.files = [];
+			}
+		},
+		watch: {
+			files: {
+				handler(newVal) {
+					let file = newVal[0];
+
+					this.preViewImg = [];
+					this.preViewPDF = [];
+					this.preViewImgHandler();
+				}
 			}
 		}
 	};
+}
+
+function readURL(input) {
+	let result;
 }

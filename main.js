@@ -62,13 +62,22 @@
 				auth: 0,
 				loginId: ''
 			},
-			apiurl: './main.php'
+			apiurl: './main.php',
+			siteStatusflag: ''
 		},
-		created() {},
+		mounted() {
+			this.siteStatus();
+			this.getStatus();
+		},
 		computed: {
 			loginName: {
 				get() {
 					return this.login.loginName;
+				}
+			},
+			status: {
+				get() {
+					return this.siteStatusflag;
 				}
 			}
 		},
@@ -94,6 +103,20 @@
 					this.checkLogin({ account: '', name: '', auth: 0 });
 					this.$router.push({ path: '/login' });
 				});
+			},
+			siteStatus() {
+				$.ajax({
+					url: this.apiurl,
+					type: 'post',
+					data: { function: 'siteStatus' }
+				}).done(res => {
+					this.siteStatusflag = res === '1' ? true : false;
+				});
+			},
+			getStatus() {
+				setInterval(() => {
+					this.siteStatus();
+				}, 5000);
 			}
 		}
 	});

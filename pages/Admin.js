@@ -41,9 +41,6 @@ function Admin() {
 			};
 		},
 		components: { answer: Answer() },
-		mounted() {
-			// this.checkEditingHandler();
-		},
 		computed: {
 			mainData() {
 				return this.Qary.length > 0 ? this.Qary : [];
@@ -72,7 +69,6 @@ function Admin() {
 			},
 			markQuestionHandler(qid) {
 				clearTimeout(timer);
-				$('.collapse').collapse('hide');
 				if (!this.editing.flag && this.editing.qid === '') {
 					this.editing.flag = true;
 					this.editing.qid = qid;
