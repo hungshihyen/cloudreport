@@ -8,8 +8,7 @@ function Login() {
 					<input type="text" id="account" class="form-control my-3" placeholder="AIPS 帳號" required v-model.trim="account">       
 					<input type="password" id="password" class="form-control my-3" placeholder="password" required v-model.trim="password">
 					<div class="alert alert-danger w-50 text-center mx-auto" v-show="errMsg">{{errMsg}}</div>
-					<button class="btn btn-primary" type="submit" @click.prevent="loginHandler">Sign In</button>
-				
+					<button class="btn btn-primary" type="submit" @click.prevent="loginHandler">Sign In</button>				
 				</form>				
 			</div>`,
 		props: {

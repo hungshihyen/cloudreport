@@ -116,7 +116,7 @@
 			getStatus() {
 				setInterval(() => {
 					this.siteStatus();
-				}, 5000);
+				}, 10000);
 			}
 		}
 	});

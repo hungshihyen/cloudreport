@@ -85,11 +85,8 @@ function Answer() {
 					let obj = {};
 					obj = this.answer;
 					this.editingDisabled = false;
-					if (obj.editing !== '' && obj.answerflag === '0') {
+					if (obj.editing && obj.answerflag === '0') {
 						this.editingDisabled = true;
-						obj.editing === this.login.loginName
-							? $(`#qid${obj.qid}`).collapse('show')
-							: '';
 					}
 					obj['imgAttachment'] = obj.attachment.filter(
 						el =>

@@ -1,4 +1,5 @@
 function Admin() {
+	let timer = null;
 	return {
 		name: 'Admin',
 		template: `
@@ -65,7 +66,7 @@ function Admin() {
 			async triggerRenew(n) {
 				clearTimeout(timer);
 				await this.getQuestions(n);
-				await this.checkEditingHandler();
+				this.startCheckEditing();
 			},
 			markQuestionHandler(qid) {
 				clearTimeout(timer);
@@ -91,27 +92,15 @@ function Admin() {
 							qid: this.editing.qid
 						}
 					}).done(() => {
-						this.checkEditingHandler();
+						this.triggerRenew();
 					});
 				}
 			},
 			startCheckEditing() {
 				clearTimeout(timer);
 				timer = setTimeout(() => {
-					// this.checkEditingHandler();
 					this.triggerRenew(this.active);
 				}, 5000);
-			},
-			checkEditingHandler() {
-				$.ajax({
-					url: this.apiurl,
-					type: 'post',
-					data: { function: 'checkEditingHandler' }
-				}).done(response => {
-					response = JSON.parse(response);
-					if (response.length > 0) this.editingData = response;
-					this.startCheckEditing();
-				});
 			}
 		},
 		beforeRouteLeave(to, from, next) {
@@ -121,17 +110,15 @@ function Admin() {
 		watch: {
 			$route: {
 				immediate: true,
-				handler(newVal, oldVal) {
+				handler(newVal) {
 					clearTimeout(timer);
 					let flag = newVal.query.answer ? true : false;
 					this.active = flag;
 					this.triggerRenew(flag);
-					// this.getQuestions(flag);
-					// this.checkEditingHandler();
 				}
 			},
 			editingData: {
-				handler(newVal, oldVal) {
+				handler(newVal) {
 					this.Qary.reduce((prev, curr) => {
 						curr.editing = '';
 						newVal.forEach(el => {
@@ -145,5 +132,3 @@ function Admin() {
 		}
 	};
 }
-
-var timer = null;
