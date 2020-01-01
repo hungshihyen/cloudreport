@@ -3,7 +3,7 @@ function Question() {
 		name: 'Question',
 		template: `
 			<div id="question">
-				<h3 class="mt-3">提問區</h3>		
+				<h3 class="mt-5">提問區</h3>		
 				<form class="qform">
 					<div class="form-group">
 						<label for="inputQuestion">回報問題</label>
@@ -15,17 +15,23 @@ function Question() {
 							:style="'background-image:url('+img+')'" 
 							@click="deletePreview"></div>
 					</div>
-					<div class="attachment-pool" v-if="files.length > 0 && showPreViewPDF.length > 0">
-						<div class="mr-2 border border-secondary rounded p-2 preview" v-for="(pdf,index) in showPreViewPDF" @click="deletePreview">
-							{{pdf}}
+					<div class="attachment-pool" v-if="files.length > 0 && showPreViewFile.length > 0">
+						<div class="mr-2 border border-secondary rounded p-2 preview" v-for="(file, index) in showPreViewFile" @click="deletePreview">
+							{{file}}
 						</div>				
 					</div>
-					<div class="form-group text-right">
+					<div class="form-group text-right">						
 						<label class="btn btn-outline-primary mb-0" for="uploadfiles">上傳附件</label>
-						<input :type="inputType" ref="files" class="form-control-file" id="uploadfiles" @change="fileUpload" accept=".jpg,.png">
+						<input :type="inputType" ref="files" class="form-control-file" id="uploadfiles" @change="fileUpload" accept=".jpg,.png, .zip">
 						<button class="btn btn-outline-success" @click.prevent="submitHandler">送出</button>
 					</div>			  
 				</form>
+				<div class="mt-5">
+					<ul class="text-secondary">
+						<li>*附件可上傳jpg、png、zip</li>
+						<li>若有多檔請打包成一個壓縮檔上傳</li>
+					</ul>
+				</div>
 			</div>`,
 		props: {
 			login: {
@@ -43,7 +49,7 @@ function Question() {
 				files: [],
 				inputFileType: 'file',
 				preViewImg: [],
-				preViewPDF: []
+				preViewFile: []
 			};
 		},
 		computed: {
@@ -61,31 +67,36 @@ function Question() {
 			showPreViewImg() {
 				return this.preViewImg;
 			},
-			showPreViewPDF() {
-				return this.preViewPDF;
+			showPreViewFile() {
+				return this.preViewFile;
 			}
 		},
 		methods: {
 			preViewImgHandler() {
 				if (this.files.length > 0) {
 					for (let i = 0; i < this.files.length; i++) {
-						if (this.files[i].type !== 'application/pdf') {
+						if (
+							this.files[i].type !==
+							'application/x-zip-compressed'
+						) {
 							let reader = new FileReader();
 							reader.onload = e => {
 								this.preViewImg.push(e.target.result);
 							};
 							reader.readAsDataURL(this.files[i]);
 						} else {
-							this.preViewPDF.push(this.files[i].name);
+							this.preViewFile.push(this.files[i].name);
 						}
 					}
 				}
 			},
 			fileUpload() {
+				// 上傳檔案
 				let file = this.$refs.files.files;
 				if (
 					file[0].type === 'image/jpeg' ||
-					file[0].type === 'image/png'
+					file[0].type === 'image/png' ||
+					file[0].type === 'application/x-zip-compressed'
 				) {
 					this.files = file;
 				}
@@ -97,9 +108,7 @@ function Question() {
 			submitHandler() {
 				const vm = this;
 				if (this.questionContent === '') return;
-				let question = JSON.stringify(
-					this.questionContent.replace(/\r\n|\n/g, '')
-				);
+				let question = JSON.stringify(formatStr(this.questionContent));
 				let formData = new FormData();
 				if (this.files.length > 0) {
 					for (let i = 0; i < this.files.length; i++) {
@@ -124,18 +133,18 @@ function Question() {
 		},
 		watch: {
 			files: {
-				handler(newVal) {
-					let file = newVal[0];
-
+				handler() {
 					this.preViewImg = [];
-					this.preViewPDF = [];
+					this.preViewFile = [];
 					this.preViewImgHandler();
 				}
 			}
 		}
 	};
-}
 
-function readURL(input) {
-	let result;
+	function formatStr(str) {
+		str = str.replace(/\'|\"/g, '');
+		str = str.replace(/\r\n|\n/g, '');
+		return str;
+	}
 }

@@ -68,6 +68,7 @@ function Login() {
 				});
 			},
 			async checkloginHandler() {
+				// 確定是否登入
 				$.ajax({
 					url: this.apiurl,
 					type: 'post',

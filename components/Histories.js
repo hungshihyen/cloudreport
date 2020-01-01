@@ -3,7 +3,7 @@ function Histories() {
 		name: 'Histories',
 		template: `
 			<div>
-				<h3 class="mt-3">歷史問題區</h3>
+				<h3 class="mt-5">歷史問題區</h3>
 				<div class="mt-3 row" v-if="showData.length > 0">
 					<history v-for="item in showData" :key="item.qid" :question="item" @viewQuestion="viewQuestion"/>
 				</div>

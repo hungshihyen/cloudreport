@@ -7,9 +7,9 @@ function Admin() {
 				<router-link class="btn btn-outline-info" :class="{'active':!active}" to="admin">未答區</router-link>
 				<router-link class="btn btn-outline-info" :class="{'active':active}" to="admin?answer=1">已回答</router-link>				
 				<div v-if="mainData.length > 0">
-					<answer v-for="data in mainData" 
-						:answer="data" 
-						:key="data.qid" 
+					<answer v-for="obj in mainData" 
+						:answer="obj" 
+						:key="obj.qid" 
 						:login="login" 
 						:apiurl="apiurl"
 						@answer-renew="triggerRenew"
@@ -49,6 +49,7 @@ function Admin() {
 		},
 		methods: {
 			getQuestions(n) {
+				// 取資料
 				let conditions = n ? '1' : '0';
 				$.ajax({
 					url: this.apiurl,
@@ -64,11 +65,13 @@ function Admin() {
 				});
 			},
 			async triggerRenew(n) {
+				// 更新資料
 				clearTimeout(timer);
 				await this.getQuestions(n);
 				this.startCheckEditing();
 			},
 			markQuestionHandler(qid) {
+				// 設定answermark
 				clearTimeout(timer);
 				if (!this.editing.flag && this.editing.qid === '') {
 					this.editing.flag = true;
@@ -82,6 +85,7 @@ function Admin() {
 				this.setQuestionMarkHandler();
 			},
 			setQuestionMarkHandler() {
+				// answermark寫入db
 				if (this.editing.flag) {
 					$.ajax({
 						url: this.apiurl,
@@ -92,11 +96,12 @@ function Admin() {
 							qid: this.editing.qid
 						}
 					}).done(() => {
-						this.triggerRenew();
+						this.triggerRenew(this.active);
 					});
 				}
 			},
 			startCheckEditing() {
+				// set timer
 				clearTimeout(timer);
 				timer = setTimeout(() => {
 					this.triggerRenew(this.active);
@@ -104,10 +109,12 @@ function Admin() {
 			}
 		},
 		beforeRouteLeave(to, from, next) {
+			// 離開這個畫面前清除 timer，不然會繼續
 			clearTimeout(timer);
 			next();
 		},
 		watch: {
+			// 偵測路由
 			$route: {
 				immediate: true,
 				handler(newVal) {
@@ -117,6 +124,7 @@ function Admin() {
 					this.triggerRenew(flag);
 				}
 			},
+			// 偵測editingData的變化，一變化就觸發
 			editingData: {
 				handler(newVal) {
 					this.Qary.reduce((prev, curr) => {

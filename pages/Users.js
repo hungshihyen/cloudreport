@@ -27,6 +27,7 @@ function Users() {
 		mounted() {},
 		methods: {},
 		watch: {
+			// 偵測路由
 			$route: {
 				immediate: true,
 				handler(newVal, oldVal) {

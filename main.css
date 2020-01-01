@@ -102,3 +102,15 @@ header .container {
     cursor: pointer;
     z-index: 100;
 }
+
+ul {
+    padding-left: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.connect {
+    background-color: #a4da49;
+}

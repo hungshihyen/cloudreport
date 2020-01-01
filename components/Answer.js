@@ -2,7 +2,7 @@ function Answer() {
 	return {
 		name: 'Answer',
 		template: `
-			<div class="mt-3 px-3 pt-3 border rounded">
+			<div class="mt-2 px-3 pt-3 border rounded">
 				<button 
 					class="btn btn-sm btn-info" 
 					data-toggle="collapse" 
@@ -25,6 +25,10 @@ function Answer() {
 						>
 							<img class="imgHover mb-5" v-show="imgInhance === img" :src="img" />
 						</div>              
+					</div>
+					<div class="mt-2 text-info" v-show="viewObj.attachment.length > 0">
+						<span>下載附件：</span>
+						<a :href="file" v-for="(file, i) in viewObj.attachment" :download="'附件'+(i+1)">附件{{i+1}}</a>
 					</div>
 				</p>
 				<div class="collapse mb-3" :id="'qid'+viewObj.qid">
@@ -65,6 +69,17 @@ function Answer() {
 				editingDisabled: false
 			};
 		},
+		mounted() {
+			let newVal = this.answer;
+			if (newVal.editing !== null) {
+				this.editingDisabled = true;
+				if (this.login.loginName === newVal.editing) {
+					$(`#qid${newVal.qid}`).collapse('show');
+				}
+			} else {
+				this.editingDisabled = false;
+			}
+		},
 		computed: {
 			imgInclude() {
 				return (
@@ -84,9 +99,13 @@ function Answer() {
 				get() {
 					let obj = {};
 					obj = this.answer;
-					this.editingDisabled = false;
-					if (obj.editing && obj.answerflag === '0') {
+					if (obj.editing !== null) {
 						this.editingDisabled = true;
+						if (this.login.loginName === obj.editing) {
+							$(`#qid${obj.qid}`).collapse('show');
+						}
+					} else {
+						this.editingDisabled = false;
 					}
 					obj['imgAttachment'] = obj.attachment.filter(
 						el =>
@@ -99,12 +118,15 @@ function Answer() {
 		},
 		methods: {
 			imgHoverInHandler(img) {
+				// 照片滑過預覽 in
 				this.imgInhance = img;
 			},
 			imgHoverOutHandler() {
+				// 照片滑過預覽 out
 				this.imgInhance = '';
 			},
 			submitHandler(qid) {
+				// response 寫入 db
 				if (this.answerText) {
 					$.ajax({
 						url: this.apiurl,
@@ -122,14 +144,17 @@ function Answer() {
 				}
 			},
 			markQuestionHandler(qid) {
+				// set answermark
 				$('.collapse').collapse('hide');
 				if (this.viewObj.answerflag === '0') {
 					this.answerText = this.viewObj.response;
-					this.$emit('mark-question', qid);
+					this.$emit('mark-question', qid); // $emit傳到父層(Admin) call function
 				}
 				return;
 			},
 			cancelAnswerHandler(qid) {
+				this.markQuestionHandler(qid);
+				// $('.collapse').collapse('hide');
 				$.ajax({
 					url: this.apiurl,
 					type: 'post',
@@ -138,17 +163,17 @@ function Answer() {
 					this.answerText = '';
 					let n = this.viewObj.answerflag === '1' ? true : false;
 					this.$emit('answer-renew', n);
-					this.markQuestionHandler(qid);
 				});
 			},
 			resetQuestion() {
+				// 重新回答問題
 				$.ajax({
 					url: this.apiurl,
 					type: 'post',
 					data: { function: 'resetQuestion', qid: this.viewObj.qid }
 				}).done(() => {
 					let n = this.viewObj.answerflag === '1' ? true : false;
-					this.$emit('answer-renew', n);
+					this.$emit('answer-renew', n); // $emit傳到父層(Admin) call function
 				});
 			}
 		}

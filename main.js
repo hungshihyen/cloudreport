@@ -66,8 +66,8 @@
 			siteStatusflag: ''
 		},
 		mounted() {
-			this.siteStatus();
-			this.getStatus();
+			this.siteStatus(); // 站台、db連線狀態
+			this.getStatus(); // 觸發timer
 		},
 		computed: {
 			loginName: {
